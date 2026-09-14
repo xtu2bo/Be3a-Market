@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync} from 'node:fs';
+const db=new DatabaseSync(':memory:');db.exec('PRAGMA foreign_keys=ON');db.exec(readFileSync(new URL('../drizzle/0000_cool_spyke.sql',import.meta.url),'utf8'));
+const product={sizes:['M'],colors:['black']};db.prepare('INSERT INTO products VALUES(?,?,?,?,?,?,?)').run('p',JSON.stringify(product),50000,3,1,0,1);
+const addOrder=id=>db.prepare('INSERT INTO orders VALUES(?,?,?,?,?,?,?,?,?,?,?)').run(id,id,'Test','01000000000','test address','test','',5000,55000,'pending',1);
+const addItem=(id,order,quantity=1,price=50000,size='M')=>db.prepare('INSERT INTO order_items VALUES(?,?,?,?,?,?,?,?)').run(id,order,'p','Test',size,'black',quantity,price);
+const stock=()=>db.prepare('SELECT stock FROM products').get().stock;
+addOrder('a');addItem('a1','a');assert.equal(stock(),2);
+assert.throws(()=>addItem('a2','a',3),/OUT_OF_STOCK/);assert.equal(stock(),2);
+assert.throws(()=>addItem('badprice','a',1,1),/OUT_OF_STOCK/);
+assert.throws(()=>addItem('badsize','a',1,50000,'XL'),/OUT_OF_STOCK/);
+db.exec('BEGIN');try{addOrder('b');addItem('b1','b',2);addItem('b2','b',1);db.exec('COMMIT');assert.fail('must reject');}catch(e){db.exec('ROLLBACK');assert.match(String(e),/OUT_OF_STOCK/);}assert.equal(stock(),2);assert.equal(db.prepare("SELECT count(*) AS n FROM orders WHERE id='b'").get().n,0);
+db.prepare("UPDATE orders SET status='cancelled' WHERE id='a'").run();assert.equal(stock(),3);db.prepare("UPDATE orders SET status='cancelled' WHERE id='a'").run();assert.equal(stock(),3);
+db.prepare('UPDATE products SET demo=1').run();assert.throws(()=>addItem('demo','a'),/OUT_OF_STOCK/);db.prepare('UPDATE products SET demo=0,active=0').run();assert.throws(()=>addItem('inactive','a'),/OUT_OF_STOCK/);
+console.log('PASS: stock reservation, oversell prevention, price/variant validation, batch rollback, cancellation once, demo and inactive rejection.');

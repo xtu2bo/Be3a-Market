@@ -1,0 +1,1 @@
+export default function NotFound(){return <main className="not-found"><span>404 / BE3A</span><h1>الصفحة دي مش موجودة</h1><p>ممكن الرابط اتغيّر أو المنتج مبقاش متاح. لسه فيه اختيارات تانية تستاهل تشوفيها.</p><a className="primary" href="/shop">اكتشفي الكولكشن ←</a><a href="/">ارجعي للرئيسية</a></main>;}
