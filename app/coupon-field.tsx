@@ -1,0 +1,4 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+export default function CouponField(){const path=usePathname();const [value,setValue]=useState('');useEffect(()=>{if(path!=='/checkout')return;const form=document.querySelector('form.checkout-page-form');if(!form)return;let hidden=form.querySelector<HTMLInputElement>('input[name="coupon"]');if(!hidden){hidden=document.createElement('input');hidden.type='hidden';hidden.name='coupon';form.appendChild(hidden);}hidden.value=value;return()=>{hidden?.remove();};},[path,value]);if(path!=='/checkout')return null;return <div className="coupon-floating"><label>كود الخصم<input value={value} onChange={e=>setValue(e.target.value.toUpperCase())} placeholder="لو عندك كود"/></label><small>الخصم بيتحسب عند تأكيد الطلب</small></div>}
