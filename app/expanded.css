@@ -304,10 +304,12 @@ html[data-theme="dark"] .standalone-admin-page button{color:#fff7f0}
 .permission-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
 .permission-chips span{padding:6px 10px;border-radius:999px;background:#f4f1eb;color:#5e554b;font-size:12px}
 .profile-password-card .muted{margin:-8px 0 20px}
+.password-verified{display:flex;align-items:center;gap:8px;padding:11px 13px;margin:-5px 0 20px;border:1px solid #b9dec3;border-radius:9px;background:#edf8f0;color:#286042;font-size:13px}
 .profile-loading{max-width:900px!important;margin:40px auto!important;text-align:center;color:#716a60}
 html[data-theme="dark"] .profile-avatar{background:#3a2c24;border-color:#684333}
 html[data-theme="dark"] .profile-identity p,html[data-theme="dark"] .profile-permissions p{color:#c7bdb1}
 html[data-theme="dark"] .permission-chips span{background:#332d27;color:#eee4d9}
+html[data-theme="dark"] .password-verified{background:#24372a;border-color:#3d694b;color:#ccebd4}
 @media(max-width:600px){.profile-identity{align-items:flex-start;flex-wrap:wrap}.profile-role{margin-inline-start:0}.profile-page>.admin-card{padding:18px}}
 html[data-theme="dark"] .admin-card button.primary,
 html[data-theme="dark"] .admin-card button.danger-button{color:#171513}

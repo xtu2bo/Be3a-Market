@@ -116,8 +116,7 @@ export async function loginPassword(email: string, password: string) {
   throw new Error('الإيميل أو كلمة المرور غير صحيحة');
 }
 
-export async function changeCurrentPassword(currentPassword: string, newPassword: string) {
-  if (newPassword.length < 10 || newPassword.length > 128) throw new Error('كلمة المرور الجديدة لازم تكون من 10 إلى 128 حرفًا');
+export async function verifyCurrentPassword(currentPassword: string) {
   const user = await currentAdmin();
   if (!user) throw new Error('جلسة الإدارة انتهت. سجّلي الدخول مرة ثانية');
   await ensureAdminTables();
@@ -126,19 +125,26 @@ export async function changeCurrentPassword(currentPassword: string, newPassword
     if (!row) throw new Error('كلمة مرور المالك لم يتم إعدادها بعد');
     const currentHash = await derive(currentPassword, base64ToBytes(row.salt), row.iterations);
     if (!(await secureCompare(currentHash, base64ToBytes(row.hash)))) throw new Error('كلمة المرور الحالية غير صحيحة');
-    const iterations = 120000;
-    const salt = new Uint8Array(16); crypto.getRandomValues(salt);
-    const hash = await derive(newPassword, salt, iterations);
-    await db().prepare('UPDATE admin_credentials SET salt=?,hash=?,iterations=? WHERE id=1').bind(bytesToBase64(salt), bytesToBase64(hash), iterations).run();
     return;
   }
   const row = await db().prepare('SELECT email,salt,hash,iterations FROM admin_users WHERE lower(email)=lower(?) AND active=1').bind(user.email).first<{email:string;salt:string;hash:string;iterations:number}>();
   if (!row) throw new Error('حساب المشرف غير موجود أو متوقف');
   const currentHash = await derive(currentPassword, base64ToBytes(row.salt), row.iterations);
   if (!(await secureCompare(currentHash, base64ToBytes(row.hash)))) throw new Error('كلمة المرور الحالية غير صحيحة');
+}
+
+export async function changeCurrentPassword(currentPassword: string, newPassword: string) {
+  if (newPassword.length < 10 || newPassword.length > 128) throw new Error('كلمة المرور الجديدة لازم تكون من 10 إلى 128 حرفًا');
+  await verifyCurrentPassword(currentPassword);
+  const user = await currentAdmin();
+  if (!user) throw new Error('جلسة الإدارة انتهت. سجّلي الدخول مرة ثانية');
   const iterations = 120000;
   const salt = new Uint8Array(16); crypto.getRandomValues(salt);
   const hash = await derive(newPassword, salt, iterations);
+  if (user.role === 'owner') {
+    await db().prepare('UPDATE admin_credentials SET salt=?,hash=?,iterations=? WHERE id=1').bind(bytesToBase64(salt), bytesToBase64(hash), iterations).run();
+    return;
+  }
   await db().prepare('UPDATE admin_users SET salt=?,hash=?,iterations=? WHERE lower(email)=lower(?)').bind(bytesToBase64(salt), bytesToBase64(hash), iterations, user.email).run();
 }
 

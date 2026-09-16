@@ -12,7 +12,9 @@ export default function ProfilePanel() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [verified, setVerified] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [verifyBusy, setVerifyBusy] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,6 +44,20 @@ export default function ProfilePanel() {
     finally { setBusy(false); }
   }
 
+  async function verify(e: React.FormEvent) {
+    e.preventDefault();
+    if (currentPassword.length < 10) { toast.error('اكتبي كلمة المرور الحالية كاملة'); return; }
+    setVerifyBusy(true);
+    try {
+      const r = await fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'verifyPassword', currentPassword }) });
+      const data = await r.json() as { error?: string };
+      if (!r.ok) throw Error(data.error || 'كلمة المرور الحالية غير صحيحة');
+      setVerified(true);
+      toast.success('تم التحقق اختاري كلمة المرور الجديدة');
+    } catch (error) { toast.error((error as Error).message); }
+    finally { setVerifyBusy(false); }
+  }
+
   if (loading) return <main className="standalone-admin-page"><section className="admin-card profile-loading">جاري تحميل بيانات الحساب…</section></main>;
   const isOwner = viewer?.role === 'owner';
   return <main className="standalone-admin-page profile-page">
@@ -58,13 +74,14 @@ export default function ProfilePanel() {
     </section>
     <section className="admin-card profile-password-card">
       <h2><KeyRound size={19}/>تغيير كلمة المرور</h2>
-      <p className="muted">اكتبي كلمة المرور الحالية أولًا وبعد التحقق منها اختاري كلمة مرور جديدة.</p>
-      <form className="form-grid" onSubmit={save}>
+      {!verified ? <><p className="muted">اكتبي كلمة المرور الحالية واضغطي تأكيد قبل اختيار كلمة مرور جديدة.</p><form className="form-grid" onSubmit={verify}>
         <label className="full">كلمة المرور الحالية<input required type="password" autoComplete="current-password" minLength={10} value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} dir="ltr"/></label>
+        <button className="primary full" disabled={verifyBusy}>{verifyBusy ? 'جاري التحقق…' : 'تأكيد كلمة المرور الحالية'}</button>
+      </form></> : <><div className="password-verified"><ShieldCheck size={18}/>تم التحقق من كلمة المرور الحالية</div><form className="form-grid" onSubmit={save}>
         <label>كلمة المرور الجديدة<input required type="password" autoComplete="new-password" minLength={10} value={newPassword} onChange={e => setNewPassword(e.target.value)} dir="ltr"/></label>
         <label>تأكيد كلمة المرور الجديدة<input required type="password" autoComplete="new-password" minLength={10} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} dir="ltr"/></label>
         <button className="primary full" disabled={busy}>{busy ? 'جاري تغيير كلمة المرور…' : 'تأكيد وتغيير كلمة المرور'}</button>
-      </form>
+      </form></>}
     </section>
   </main>;
 }
