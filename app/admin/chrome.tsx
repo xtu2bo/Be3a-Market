@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BarChart3, Bell, ExternalLink, LayoutDashboard, LogOut, Package, Settings2, ShoppingBag, TicketPercent, Truck, Users } from 'lucide-react';
+import { BarChart3, Bell, ExternalLink, LayoutDashboard, LogOut, Package, Settings2, ShoppingBag, TicketPercent, Truck, Users, UserCircle2 } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import Preferences from '../preferences';
 
@@ -16,13 +16,14 @@ const nav = [
   { id: 'notifications', name: 'التنبيهات', icon: Bell, path: '/admin/notifications' },
   { id: 'team', name: 'المشرفون والصلاحيات', icon: Users, path: '/admin/team' },
   { id: 'settings', name: 'إعدادات المتجر', icon: Settings2, path: '/admin/settings' },
+  { id: 'profile', name: 'البروفايل الشخصي', icon: UserCircle2, path: '/admin/profile' },
 ];
 
 export default function AdminChrome({ active, title, children }: { active: string; title: string; children: React.ReactNode }) {
   const [viewer, setViewer] = useState<{role:string;permissions:string[]}>({role:'owner',permissions:['*']});
   const [visitTotal, setVisitTotal] = useState(0);
   useEffect(() => { void Promise.all([fetch('/api/admin').then(r=>r.json()),fetch('/api/analytics').then(r=>r.json())]).then(([adminRaw,analyticsRaw])=>{ const v=adminRaw as {viewer?:{role:string;permissions:string[]}}; const a=analyticsRaw as {totalVisits?:number}; if(v.viewer) setViewer(v.viewer); setVisitTotal(Number(a.totalVisits||0)); }).catch(()=>{}); }, []);
-  const visibleNav = nav.filter(item => { const permission=item.id==='categories'?'settings':item.id==='notifications'?'analytics':item.id; return viewer.role === 'owner' || viewer.permissions.includes('*') || (item.id !== 'team' && viewer.permissions.includes(permission)); });
+  const visibleNav = nav.filter(item => { const permission=item.id==='categories'?'settings':item.id==='notifications'?'analytics':item.id; return item.id === 'profile' || viewer.role === 'owner' || viewer.permissions.includes('*') || (item.id !== 'team' && viewer.permissions.includes(permission)); });
   return <SidebarProvider>
     <Sidebar side="right" className="admin-sidebar">
       <SidebarHeader><a href="/" className="admin-wordmark">بيعة<span>لوحة إدارة المتجر</span></a></SidebarHeader>
