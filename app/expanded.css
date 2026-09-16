@@ -479,7 +479,7 @@ html[data-theme="dark"] .category-row.selected{background:#3a2c24}
 .view-home .hero-visual>img{object-fit:contain;background:#30251e}
 .category-tile>img,.editorial-image>img,.main-product-photo>img,.about-split img,.product-detail>a>img{object-fit:contain;background:#eee9e1}
 .product-image>img,.product-open img,.rosjo-hero-art>img,.categories-preview img,.mobile-category-preview img,.image-thumbnails img,.cart-line>img,.cart-line>a>img,.checkout-mini-products img,.product-cell img,.category-product-row img{object-fit:contain;background:#eee9e1}
-.rosjo-store .product-open img{object-fit:contain;background:#f6dfe0}
+.rosjo-store .product-open img{object-fit:cover;background:#f6dfe0;padding:0;mix-blend-mode:normal}
 html[data-theme="dark"] .view-home .hero-visual>img{background:#211914}
 html[data-theme="dark"] .category-tile>img,html[data-theme="dark"] .editorial-image>img,html[data-theme="dark"] .main-product-photo>img,html[data-theme="dark"] .about-split img,html[data-theme="dark"] .product-detail>a>img,html[data-theme="dark"] .product-image>img,html[data-theme="dark"] .rosjo-hero-art>img,html[data-theme="dark"] .categories-preview img,html[data-theme="dark"] .mobile-category-preview img,html[data-theme="dark"] .image-thumbnails img,html[data-theme="dark"] .cart-line>img,html[data-theme="dark"] .cart-line>a>img,html[data-theme="dark"] .checkout-mini-products img,html[data-theme="dark"] .product-cell img,html[data-theme="dark"] .category-product-row img{background:#2b2621}
 @media(max-width:800px){.view-home .hero{aspect-ratio:auto;min-height:680px}.view-home .hero-copy{height:auto;min-height:680px}}
