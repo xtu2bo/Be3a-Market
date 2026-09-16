@@ -506,5 +506,9 @@ html[data-theme="dark"] .category-tile>img,html[data-theme="dark"] .editorial-im
 html[data-theme="dark"] .view-home .hero-copy{background:#171513;color:#f6f1ea}
 html[data-theme="dark"] .view-home .hero-copy>.eyebrow{color:#d7b7a6}
 html[data-theme="dark"] .view-home .hero-copy>p:not(.eyebrow),html[data-theme="dark"] .view-home .hero-note{color:#d0c7bd}
+@media(min-width:801px){
+  .view-home .hero-secondary{margin-top:14px}
+  .view-home .hero-note{margin-top:26px}
+}
 html[data-theme="dark"] .category-products-list,html[data-theme="dark"] .category-product-row{border-color:#3d3731}
 @media(max-width:600px){.category-product-add{flex-direction:column}.category-products-card .card-heading{display:grid;gap:12px}.category-edit-form .primary,.category-edit-form .secondary{width:100%}}
