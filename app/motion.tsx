@@ -3,7 +3,7 @@ import { useEffect,useState } from 'react';
 export function MotionLayer({routeKey}:{routeKey:string}) {
  useEffect(()=>{
   const root=document.documentElement,preference=window.matchMedia('(prefers-reduced-motion: reduce)');let observer:IntersectionObserver|undefined,frame=0;
-  const apply=()=>{frame=0;root.style.setProperty('--page-progress',String(Math.min(1,Math.max(0,window.scrollY/Math.max(1,root.scrollHeight-window.innerHeight)))));root.style.setProperty('--hero-drift',`${Math.min(window.scrollY*.09,65)}px`);root.classList.toggle('page-scrolled',window.scrollY>45);};
+  const apply=()=>{frame=0;const y=window.scrollY;root.style.setProperty('--page-progress',String(Math.min(1,Math.max(0,y/Math.max(1,root.scrollHeight-window.innerHeight)))));root.style.setProperty('--hero-drift',`${Math.min(y*.09,65)}px`);const scrolled=root.classList.contains('page-scrolled');if(!scrolled&&y>80)root.classList.add('page-scrolled');else if(scrolled&&y<20)root.classList.remove('page-scrolled');};
   const scroll=()=>{if(!frame)frame=requestAnimationFrame(apply);};
   const setup=()=>{observer?.disconnect();root.classList.remove('motion-ready');if(preference.matches)return;if('IntersectionObserver' in window){root.classList.add('motion-ready');observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('in-view');observer?.unobserve(entry.target);}},{threshold:.06,rootMargin:'0px 0px 25px 0px'});document.querySelectorAll('[data-reveal]').forEach(el=>observer?.observe(el));}scroll();};
   setup();preference.addEventListener('change',setup);window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',scroll);
