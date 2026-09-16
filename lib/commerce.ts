@@ -11,6 +11,10 @@ export async function ensureCommerceTables() {
     db().prepare('DROP TRIGGER IF EXISTS restore_returned_stock'),
   ]);
   for (const statement of [
+    "CREATE TRIGGER IF NOT EXISTS reserve_stock BEFORE INSERT ON order_items BEGIN SELECT CASE WHEN NEW.quantity < 1 OR NOT EXISTS (SELECT 1 FROM products WHERE id=NEW.product_id AND active=1 AND demo=0 AND stock >= NEW.quantity AND price=NEW.price AND EXISTS (SELECT 1 FROM json_each(products.data, '$.sizes') WHERE value=NEW.size) AND EXISTS (SELECT 1 FROM json_each(products.data, '$.colors') WHERE value=NEW.color)) THEN RAISE(ABORT, 'OUT_OF_STOCK') END; UPDATE products SET stock=stock-NEW.quantity,updated=updated+1 WHERE id=NEW.product_id; END",
+    "CREATE TRIGGER IF NOT EXISTS restore_cancelled_stock AFTER UPDATE OF status ON orders WHEN NEW.status='cancelled' AND OLD.status!='cancelled' BEGIN UPDATE products SET stock=stock+COALESCE((SELECT SUM(quantity) FROM order_items WHERE order_id=NEW.id AND product_id=products.id),0),updated=updated+1 WHERE id IN (SELECT product_id FROM order_items WHERE order_id=NEW.id); END",
+  ]) { try { await db().prepare(statement).run(); } catch { /* triggers are recreated on the next request */ } }
+  for (const statement of [
     'ALTER TABLE orders ADD COLUMN coupon TEXT',
     'ALTER TABLE orders ADD COLUMN discount INTEGER NOT NULL DEFAULT 0',
   ]) { try { await db().prepare(statement).run(); } catch { /* columns already exist */ } }
