@@ -416,7 +416,7 @@ html[data-theme="dark"] .snow-crystal{background:linear-gradient(135deg,#fffdf9 
 @media(prefers-reduced-motion:reduce){.home-snow{display:none}}
 
 /* Full-width editorial hero: the story now sits over the image */
-.view-home .hero{display:block;position:relative;isolation:isolate;min-height:clamp(560px,58vw,820px);max-width:1600px;margin:0 auto;overflow:hidden}
+.view-home .hero{display:block;position:relative;isolation:isolate;min-height:clamp(560px,58vw,820px);width:100%;max-width:none;margin:0;overflow:hidden}
 .view-home .hero-visual{position:absolute;inset:0;min-height:0;margin:0;z-index:0}
 .view-home .hero-visual>img{inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:0}
 .view-home .hero-visual:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(20,15,11,.5) 0%,rgba(20,15,11,.16) 34%,rgba(20,15,11,.18) 68%,rgba(20,15,11,.42) 100%);pointer-events:none}
@@ -433,6 +433,20 @@ html[data-theme="dark"] .snow-crystal{background:linear-gradient(135deg,#fffdf9 
 .view-home .hero-visual .orange-sticker{z-index:4}
 @media(max-width:800px){.view-home .hero{min-height:680px}.view-home .hero-copy{width:min(90%,540px);min-height:680px;padding:80px 5% 120px}.view-home .hero-visual>img{object-position:62% center}.view-home .hero-visual:after{background:linear-gradient(180deg,rgba(20,15,11,.46) 0%,rgba(20,15,11,.08) 42%,rgba(20,15,11,.6) 100%)}.view-home .hero h1{font-size:clamp(40px,11vw,60px)}.view-home .hero-copy>p:not(.eyebrow){font-size:14px}.view-home .hero-note{display:none}}
 @media(max-width:600px){.view-home .hero{min-height:620px}.view-home .hero-copy{min-height:620px;padding:65px 6% 100px}.view-home .hero-visual>img{object-position:60% center}.view-home .hero-copy>.primary{font-size:14px;padding-inline:18px}.view-home .hero-secondary{font-size:12px}}
+
+/* Keep checkout content inside the page width at every viewport size. */
+.view-checkout .shopping-page{padding-bottom:45px;overflow-x:clip}
+.view-checkout .page-heading{padding-bottom:25px}
+.view-checkout .purchase-layout{width:100%;max-width:100%;gap:clamp(24px,4vw,64px)}
+.view-checkout .purchase-layout>*{min-width:0;width:100%;max-width:100%}
+.view-checkout .checkout-page-form,.view-checkout .order-summary{min-width:0;max-width:100%;}
+.view-checkout .form-grid,.view-checkout .coupon-checkout,.view-checkout .payment-option{min-width:0;max-width:100%;}
+.view-checkout .form-grid label,.view-checkout .form-grid input,.view-checkout .form-grid textarea,.view-checkout .checkout-page-form .choice{min-width:0;max-width:100%;}
+.view-checkout .coupon-input-row{min-width:0;max-width:100%;}
+.view-checkout .coupon-input-row input{min-width:0;}
+.view-checkout .honeypot{left:auto!important;right:auto!important;top:auto!important;width:1px!important;height:1px!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;}
+.view-checkout .honeypot input{width:1px!important;min-width:1px!important;max-width:1px!important;}
+@media(max-width:800px){.view-checkout .purchase-layout{gap:18px}.view-checkout .checkout-page-form{padding-top:0}.view-checkout .order-summary{margin-top:0}}
 
 /* Category management */
 .category-edit-form{max-width:100%!important;flex-wrap:wrap}
