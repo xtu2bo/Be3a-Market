@@ -507,6 +507,9 @@ html[data-theme="dark"] .view-home .hero-copy{background:#171513;color:#f6f1ea}
 html[data-theme="dark"] .view-home .hero-copy>.eyebrow{color:#d7b7a6}
 html[data-theme="dark"] .view-home .hero-copy>p:not(.eyebrow),html[data-theme="dark"] .view-home .hero-note{color:#d0c7bd}
 @media(min-width:801px){
+  .view-home .hero{height:clamp(640px,calc(100vh - 137px),900px);aspect-ratio:auto;min-height:0}
+  .view-home .hero-copy{height:100%;min-height:0}
+  .view-home .hero-visual>img{object-fit:cover;object-position:center 18%}
   .view-home .hero-secondary{margin-top:14px}
   .view-home .hero-note{margin-top:26px}
 }
