@@ -489,6 +489,8 @@ html[data-theme="dark"] .category-tile>img,html[data-theme="dark"] .editorial-im
 @media(max-width:800px){
   .view-home .hero{display:flex;flex-direction:column;aspect-ratio:auto;min-height:0;background:var(--background)}
   .view-home .hero-visual{order:0;position:relative;inset:auto;width:100%;height:auto;min-height:0;aspect-ratio:4/5;margin:0;overflow:hidden}
+  .view-home .hero-visual>picture{position:relative;inset:auto;display:block;width:100%;height:100%}
+  .view-home .hero-visual>picture>img{position:relative;inset:auto;width:100%;height:100%;object-fit:contain;background:#30251e}
   .view-home .hero-visual>img{position:relative;inset:auto;width:100%;height:100%;object-fit:contain;background:#30251e}
   .view-home .hero-copy{order:1;width:100%;height:auto;min-height:0;padding:42px 7% 48px;align-items:center;justify-content:center;background:var(--background);color:var(--foreground);text-shadow:none}
   .view-home .hero-copy>.eyebrow{color:#8b7463;margin-bottom:14px}
@@ -509,6 +511,8 @@ html[data-theme="dark"] .view-home .hero-copy>p:not(.eyebrow),html[data-theme="d
 @media(min-width:801px){
   .view-home .hero{height:clamp(640px,calc(100vh - 137px),900px);aspect-ratio:auto;min-height:0}
   .view-home .hero-copy{height:100%;min-height:0}
+  .view-home .hero-visual>picture{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .view-home .hero-visual>picture>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%}
   .view-home .hero-visual>img{object-fit:cover;object-position:center 18%}
   .view-home .hero-secondary{margin-top:14px}
   .view-home .hero-note{margin-top:26px}
