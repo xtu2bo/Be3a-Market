@@ -1,0 +1,6 @@
+{
+  "name": "بيعة",
+  "settings": [
+    {"type":"image_picker","id":"logo","label":"اللوجو"}
+  ]
+}
