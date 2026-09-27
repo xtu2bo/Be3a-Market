@@ -1,0 +1,3 @@
+<section class="page-width listing"><div class="section-heading row"><div><p class="eyebrow">BE3A COLLECTION</p><h1>{{ collection.title }}</h1></div><span>{{ collection.products_count }} منتج</span></div><div class="product-grid">{% for product in collection.products %}{% render 'product-card', product: product %}{% endfor %}</div></section>
+
+{% schema %}{"name":"Collection products","settings":[]}{% endschema %}

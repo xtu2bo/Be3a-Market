@@ -1,0 +1,24 @@
+<header class="site-header" data-header>
+  <div class="announcement">بيعة · براند مصري</div>
+  <div class="header-inner">
+    <a class="brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      {% if settings.logo != blank %}{{ settings.logo | image_url: width: 180 | image_tag: class: 'brand-logo', alt: shop.name }}{% else %}<img class="brand-logo" src="{{ 'be3a-logo-transparent.png' | asset_url }}" alt="بيعة">{% endif %}
+    </a>
+    <nav class="main-nav" aria-label="القائمة الرئيسية">
+      <a href="{{ routes.root_url }}">الرئيسية</a>
+      <a href="{{ routes.all_products_collection_url }}">كل الكولكشن</a>
+      <a href="{{ routes.collections_url }}">الأقسام</a>
+      <a href="/pages/story">حكاية بيعة</a>
+    </nav>
+    <div class="header-actions">
+      <a href="{{ routes.search_url }}" aria-label="بحث">⌕</a>
+      <a href="{{ routes.cart_url }}" aria-label="السلة">♡ <span class="cart-count">{{ cart.item_count }}</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="mobile-menu" hidden>
+    <a href="{{ routes.root_url }}">الرئيسية</a><a href="{{ routes.all_products_collection_url }}">كل المنتجات</a><a href="{{ routes.collections_url }}">الأقسام</a><a href="/pages/story">حكاية بيعة</a>
+  </div>
+</header>
+
+{% schema %}{"name":"Header","settings":[]}{% endschema %}
