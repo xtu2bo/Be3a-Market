@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "collections": {
+      "type": "collections-showcase",
+      "settings": {}
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "title": "عينك هتيجي عليهم"
+      }
+    },
+    "editorial": {
+      "type": "editorial",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "collections",
+    "featured",
+    "editorial"
+  ]
+}
